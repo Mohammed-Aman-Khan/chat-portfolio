@@ -1,36 +1,26 @@
-import type { ComponentProps, ReactNode } from "react";
+"use client";
 
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
-  CommandShortcut,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import type { Popover as PopoverPrimitive } from "radix-ui";
+import type { ComponentProps, ReactNode, HTMLAttributes } from "react";
+
+import { Popover } from "@heroui/react";
+
+const PopoverTrigger = Popover.Trigger;
+const PopoverContent = Popover.Content;
 import { cn } from "@/lib/utils";
 
-export type ModelSelectorProps = React.ComponentProps<typeof PopoverPrimitive.Root>;
+export type ModelSelectorProps = ComponentProps<typeof Popover>;
 
 export const ModelSelector = (props: ModelSelectorProps) => (
   <Popover {...props} />
 );
 
-export type ModelSelectorTriggerProps = ComponentProps<typeof PopoverTrigger>;
+export type ModelSelectorTriggerProps = ComponentProps<typeof PopoverTrigger> & { asChild?: boolean };
 
-export const ModelSelectorTrigger = (props: ModelSelectorTriggerProps) => (
+export const ModelSelectorTrigger = ({ asChild: _, ...props }: ModelSelectorTriggerProps) => (
   <PopoverTrigger {...props} />
 );
 
-export type ModelSelectorContentProps = ComponentProps<typeof PopoverContent> & {
+export type ModelSelectorContentProps = HTMLAttributes<HTMLDivElement> & {
   title?: ReactNode;
 };
 
@@ -41,66 +31,72 @@ export const ModelSelectorContent = ({
   ...props
 }: ModelSelectorContentProps) => (
   <PopoverContent
-    align="start"
     className={cn(
       "w-[280px] p-0 rounded-xl border border-border/60 bg-card/95 backdrop-blur-xl shadow-[var(--shadow-float)]",
       className
     )}
-    side="top"
-    sideOffset={8}
     {...props}
   >
-    <Command className="**:data-[slot=command-input-wrapper]:h-auto">
-      {children}
-    </Command>
+    <div className="w-full">{children}</div>
   </PopoverContent>
 );
 
-export type ModelSelectorInputProps = ComponentProps<typeof CommandInput>;
+export type ModelSelectorInputProps = React.ComponentProps<"input">;
 
 export const ModelSelectorInput = ({
   className,
   ...props
 }: ModelSelectorInputProps) => (
-  <CommandInput className={cn("h-auto py-2.5 text-[13px]", className)} {...props} />
+  <input
+    className={cn(
+      "h-auto w-full px-3 py-2.5 text-[13px] bg-transparent outline-none border-b border-border/40",
+      className
+    )}
+    placeholder="Search..."
+    {...props}
+  />
 );
 
-export type ModelSelectorListProps = ComponentProps<typeof CommandList>;
+export type ModelSelectorListProps = HTMLAttributes<HTMLDivElement>;
 
 export const ModelSelectorList = ({ className, ...props }: ModelSelectorListProps) => (
-  <CommandList className={cn("max-h-[280px]", className)} {...props} />
+  <div className={cn("max-h-[280px] overflow-y-auto", className)} {...props} />
 );
 
-export type ModelSelectorEmptyProps = ComponentProps<typeof CommandEmpty>;
+export type ModelSelectorEmptyProps = HTMLAttributes<HTMLDivElement>;
 
-export const ModelSelectorEmpty = (props: ModelSelectorEmptyProps) => (
-  <CommandEmpty {...props} />
+export const ModelSelectorEmpty = ({ className, ...props }: ModelSelectorEmptyProps) => (
+  <div className={cn("px-3 py-6 text-center text-sm text-muted-foreground", className)} {...props} />
 );
 
-export type ModelSelectorGroupProps = ComponentProps<typeof CommandGroup>;
+export type ModelSelectorGroupProps = HTMLAttributes<HTMLDivElement> & { heading?: string };
 
-export const ModelSelectorGroup = (props: ModelSelectorGroupProps) => (
-  <CommandGroup {...props} />
+export const ModelSelectorGroup = ({ className, heading, ...props }: ModelSelectorGroupProps) => (
+  <div className={cn(className)} {...props} />
 );
 
-export type ModelSelectorItemProps = ComponentProps<typeof CommandItem>;
+export type ModelSelectorItemProps = HTMLAttributes<HTMLDivElement> & { value?: string };
 
 export const ModelSelectorItem = ({ className, ...props }: ModelSelectorItemProps) => (
-  <CommandItem className={cn("w-full text-[13px] rounded-lg", className)} {...props} />
+  <div
+    className={cn(
+      "w-full px-3 py-2 text-[13px] cursor-pointer hover:bg-accent rounded-lg",
+      className
+    )}
+    {...props}
+  />
 );
 
-export type ModelSelectorShortcutProps = ComponentProps<typeof CommandShortcut>;
+export type ModelSelectorShortcutProps = HTMLAttributes<HTMLSpanElement>;
 
 export const ModelSelectorShortcut = (props: ModelSelectorShortcutProps) => (
-  <CommandShortcut {...props} />
+  <span {...props} />
 );
 
-export type ModelSelectorSeparatorProps = ComponentProps<
-  typeof CommandSeparator
->;
+export type ModelSelectorSeparatorProps = HTMLAttributes<HTMLHRElement>;
 
 export const ModelSelectorSeparator = (props: ModelSelectorSeparatorProps) => (
-  <CommandSeparator {...props} />
+  <hr className="border-border/40" {...props} />
 );
 
 export type ModelSelectorLogoProps = Omit<

@@ -2,27 +2,23 @@
 
 import type { ComponentProps } from "react";
 
-import { Button } from "@/components/ui/button";
-import {
-  ScrollArea,
-  ScrollBar,
-} from "@/components/ui/scroll-area";
+import { Button } from "@heroui/react";
+import { ScrollShadow } from "@heroui/react";
 import { cn } from "@/lib/utils";
 import { useCallback } from "react";
 
-export type SuggestionsProps = ComponentProps<typeof ScrollArea>;
+export type SuggestionsProps = ComponentProps<typeof ScrollShadow>;
 
 export const Suggestions = ({
   className,
   children,
   ...props
 }: SuggestionsProps) => (
-  <ScrollArea className="w-full overflow-x-auto whitespace-nowrap" {...props}>
+  <ScrollShadow className="w-full whitespace-nowrap" orientation="horizontal" {...props}>
     <div className={cn("flex w-max flex-nowrap items-center gap-2", className)}>
       {children}
     </div>
-    <ScrollBar className="hidden" orientation="horizontal" />
-  </ScrollArea>
+  </ScrollShadow>
 );
 
 export type SuggestionProps = Omit<ComponentProps<typeof Button>, "onClick"> & {
@@ -34,7 +30,7 @@ export const Suggestion = ({
   suggestion,
   onClick,
   className,
-  variant = "outline",
+  variant = "secondary",
   size = "sm",
   children,
   ...props

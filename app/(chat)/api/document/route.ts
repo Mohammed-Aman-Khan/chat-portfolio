@@ -1,12 +1,12 @@
 import { z } from "zod";
-import { auth } from "@/app/(auth)/auth";
+import { PORTFOLIO_USER_ID } from "@/lib/constants";
 import type { ArtifactKind } from "@/components/chat/artifact";
 import {
   deleteDocumentsByIdAfterTimestamp,
   getDocumentsById,
   saveDocument,
   updateDocumentContent,
-} from "@/lib/db/queries";
+} from "@/lib/store";
 import { ChatbotError } from "@/lib/errors";
 
 const documentSchema = z.object({
@@ -27,12 +27,6 @@ export async function GET(request: Request) {
     ).toResponse();
   }
 
-  const session = await auth();
-
-  if (!session?.user) {
-    return new ChatbotError("unauthorized:document").toResponse();
-  }
-
   const documents = await getDocumentsById({ id });
 
   const [document] = documents;
@@ -41,7 +35,7 @@ export async function GET(request: Request) {
     return new ChatbotError("not_found:document").toResponse();
   }
 
-  if (document.userId !== session.user.id) {
+  if (document.userId !== PORTFOLIO_USER_ID) {
     return new ChatbotError("forbidden:document").toResponse();
   }
 
@@ -57,12 +51,6 @@ export async function POST(request: Request) {
       "bad_request:api",
       "Parameter id is required."
     ).toResponse();
-  }
-
-  const session = await auth();
-
-  if (!session?.user) {
-    return new ChatbotError("not_found:document").toResponse();
   }
 
   let content: string;
@@ -88,7 +76,7 @@ export async function POST(request: Request) {
   if (documents.length > 0) {
     const [doc] = documents;
 
-    if (doc.userId !== session.user.id) {
+    if (doc.userId !== PORTFOLIO_USER_ID) {
       return new ChatbotError("forbidden:document").toResponse();
     }
   }
@@ -103,7 +91,7 @@ export async function POST(request: Request) {
     content,
     title,
     kind,
-    userId: session.user.id,
+    userId: PORTFOLIO_USER_ID,
   });
 
   return Response.json(document, { status: 200 });
@@ -128,17 +116,11 @@ export async function DELETE(request: Request) {
     ).toResponse();
   }
 
-  const session = await auth();
-
-  if (!session?.user) {
-    return new ChatbotError("unauthorized:document").toResponse();
-  }
-
   const documents = await getDocumentsById({ id });
 
   const [document] = documents;
 
-  if (document.userId !== session.user.id) {
+  if (document.userId !== PORTFOLIO_USER_ID) {
     return new ChatbotError("forbidden:document").toResponse();
   }
 

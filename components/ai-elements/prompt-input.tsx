@@ -16,44 +16,15 @@ import type {
 } from "react";
 
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
-} from "@/components/ui/command";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
-import {
+  Dropdown,
   InputGroup,
-  InputGroupAddon,
-  InputGroupButton,
-  InputGroupTextarea,
-} from "@/components/ui/input-group";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Spinner } from "@/components/ui/spinner";
-import {
+  InputGroupInput,
+  InputGroupTextArea,
+  InputGroupPrefix,
+  InputGroupSuffix,
+  Spinner,
   Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from "@heroui/react";
 import { cn } from "@/lib/utils";
 import {
   CornerDownLeftIcon,
@@ -332,7 +303,7 @@ export const usePromptInputReferencedSources = () => {
 };
 
 export type PromptInputActionAddAttachmentsProps = ComponentProps<
-  typeof DropdownMenuItem
+  typeof Dropdown.Item
 > & {
   label?: string;
 };
@@ -343,18 +314,14 @@ export const PromptInputActionAddAttachments = ({
 }: PromptInputActionAddAttachmentsProps) => {
   const attachments = usePromptInputAttachments();
 
-  const handleSelect = useCallback(
-    (e: Event) => {
-      e.preventDefault();
-      attachments.openFileDialog();
-    },
-    [attachments]
-  );
+  const handleAction = useCallback(() => {
+    attachments.openFileDialog();
+  }, [attachments]);
 
   return (
-    <DropdownMenuItem {...props} onSelect={handleSelect}>
+    <Dropdown.Item {...props} onAction={handleAction}>
       <ImageIcon className="mr-2 size-4" /> {label}
-    </DropdownMenuItem>
+    </Dropdown.Item>
   );
 };
 
@@ -828,7 +795,7 @@ export const PromptInputBody = ({
 );
 
 export type PromptInputTextareaProps = ComponentProps<
-  typeof InputGroupTextarea
+  typeof InputGroupTextArea
 >;
 
 export const PromptInputTextarea = ({
@@ -932,7 +899,7 @@ export const PromptInputTextarea = ({
       };
 
   return (
-    <InputGroupTextarea
+    <InputGroupTextArea
       className={cn("field-sizing-content max-h-48 min-h-16", className)}
       name="message"
       onCompositionEnd={handleCompositionEnd}
@@ -946,34 +913,26 @@ export const PromptInputTextarea = ({
   );
 };
 
-export type PromptInputHeaderProps = Omit<
-  ComponentProps<typeof InputGroupAddon>,
-  "align"
->;
+export type PromptInputHeaderProps = HTMLAttributes<HTMLDivElement>;
 
 export const PromptInputHeader = ({
   className,
   ...props
 }: PromptInputHeaderProps) => (
-  <InputGroupAddon
-    align="block-end"
-    className={cn("order-first flex-wrap gap-1", className)}
+  <div
+    className={cn("order-first flex flex-wrap gap-1", className)}
     {...props}
   />
 );
 
-export type PromptInputFooterProps = Omit<
-  ComponentProps<typeof InputGroupAddon>,
-  "align"
->;
+export type PromptInputFooterProps = HTMLAttributes<HTMLDivElement>;
 
 export const PromptInputFooter = ({
   className,
   ...props
 }: PromptInputFooterProps) => (
-  <InputGroupAddon
-    align="block-end"
-    className={cn("justify-between gap-1", className)}
+  <div
+    className={cn("flex items-center justify-between gap-1", className)}
     {...props}
   />
 );
@@ -995,31 +954,31 @@ export type PromptInputButtonTooltip =
   | {
       content: ReactNode;
       shortcut?: string;
-      side?: ComponentProps<typeof TooltipContent>["side"];
+      side?: string;
     };
 
-export type PromptInputButtonProps = ComponentProps<typeof InputGroupButton> & {
+export type PromptInputButtonProps = HTMLAttributes<HTMLButtonElement> & {
   tooltip?: PromptInputButtonTooltip;
+  variant?: string;
 };
 
 export const PromptInputButton = ({
-  variant = "ghost",
   className,
-  size,
   tooltip,
+  children,
   ...props
 }: PromptInputButtonProps) => {
-  const newSize =
-    size ?? (Children.count(props.children) > 1 ? "sm" : "icon-sm");
-
   const button = (
-    <InputGroupButton
-      className={cn(className)}
-      size={newSize}
+    <button
+      className={cn(
+        "inline-flex items-center justify-center rounded-lg transition-colors hover:bg-accent hover:text-accent-foreground",
+        className
+      )}
       type="button"
-      variant={variant}
       {...props}
-    />
+    >
+      {children}
+    </button>
   );
 
   if (!tooltip) {
@@ -1029,24 +988,19 @@ export const PromptInputButton = ({
   const tooltipContent =
     typeof tooltip === "string" ? tooltip : tooltip.content;
   const shortcut = typeof tooltip === "string" ? undefined : tooltip.shortcut;
-  const side = typeof tooltip === "string" ? "top" : (tooltip.side ?? "top");
+  const placement = typeof tooltip === "string" ? undefined : tooltip.side;
 
   return (
     <Tooltip>
-      <TooltipTrigger asChild>{button}</TooltipTrigger>
-      <TooltipContent side={side}>
-        {tooltipContent}
-        {shortcut && (
-          <span className="ml-2 text-muted-foreground">{shortcut}</span>
-        )}
-      </TooltipContent>
+      {button}
+      <Tooltip.Content placement={placement as never}>{tooltipContent}</Tooltip.Content>
     </Tooltip>
   );
 };
 
-export type PromptInputActionMenuProps = ComponentProps<typeof DropdownMenu>;
+export type PromptInputActionMenuProps = ComponentProps<typeof Dropdown>;
 export const PromptInputActionMenu = (props: PromptInputActionMenuProps) => (
-  <DropdownMenu {...props} />
+  <Dropdown {...props} />
 );
 
 export type PromptInputActionMenuTriggerProps = PromptInputButtonProps;
@@ -1056,45 +1010,44 @@ export const PromptInputActionMenuTrigger = ({
   children,
   ...props
 }: PromptInputActionMenuTriggerProps) => (
-  <DropdownMenuTrigger asChild>
-    <PromptInputButton className={className} {...props}>
-      {children ?? <PlusIcon className="size-4" />}
-    </PromptInputButton>
-  </DropdownMenuTrigger>
+  <PromptInputButton className={className} {...props}>
+    {children ?? <PlusIcon className="size-4" />}
+  </PromptInputButton>
 );
 
 export type PromptInputActionMenuContentProps = ComponentProps<
-  typeof DropdownMenuContent
+  typeof Dropdown.Popover
 >;
 export const PromptInputActionMenuContent = ({
   className,
   ...props
 }: PromptInputActionMenuContentProps) => (
-  <DropdownMenuContent align="start" className={cn(className)} {...props} />
+  <Dropdown.Popover className={cn(className)} {...props} />
 );
 
 export type PromptInputActionMenuItemProps = ComponentProps<
-  typeof DropdownMenuItem
+  typeof Dropdown.Item
 >;
 export const PromptInputActionMenuItem = ({
   className,
   ...props
 }: PromptInputActionMenuItemProps) => (
-  <DropdownMenuItem className={cn(className)} {...props} />
+  <Dropdown.Item className={cn(className)} {...props} />
 );
 
 // Note: Actions that perform side-effects (like opening a file dialog)
 // are provided in opt-in modules (e.g., prompt-input-attachments).
 
-export type PromptInputSubmitProps = ComponentProps<typeof InputGroupButton> & {
+export type PromptInputSubmitProps = HTMLAttributes<HTMLButtonElement> & {
   status?: ChatStatus;
   onStop?: () => void;
+  disabled?: boolean;
+  variant?: string;
+  size?: string;
 };
 
 export const PromptInputSubmit = ({
   className,
-  variant = "default",
-  size = "icon-sm",
   status,
   onStop,
   onClick,
@@ -1106,7 +1059,7 @@ export const PromptInputSubmit = ({
   let Icon = <CornerDownLeftIcon className="size-4" />;
 
   if (status === "submitted") {
-    Icon = <Spinner />;
+    Icon = <Spinner className="size-4" />;
   } else if (status === "streaming") {
     Icon = <SquareIcon className="size-4" />;
   } else if (status === "error") {
@@ -1126,100 +1079,105 @@ export const PromptInputSubmit = ({
   );
 
   return (
-    <InputGroupButton
+    <button
       aria-label={isGenerating ? "Stop" : "Submit"}
-      className={cn(className)}
+      className={cn(
+        "inline-flex items-center justify-center rounded-lg transition-colors",
+        className
+      )}
       onClick={handleClick}
-      size={size}
       type={isGenerating && onStop ? "button" : "submit"}
-      variant={variant}
       {...props}
     >
       {children ?? Icon}
-    </InputGroupButton>
+    </button>
   );
 };
 
-export type PromptInputSelectProps = ComponentProps<typeof Select>;
+export type PromptInputSelectProps = HTMLAttributes<HTMLSelectElement>;
 
-export const PromptInputSelect = (props: PromptInputSelectProps) => (
-  <Select {...props} />
-);
-
-export type PromptInputSelectTriggerProps = ComponentProps<
-  typeof SelectTrigger
->;
-
-export const PromptInputSelectTrigger = ({
+export const PromptInputSelect = ({
   className,
   ...props
-}: PromptInputSelectTriggerProps) => (
-  <SelectTrigger
+}: PromptInputSelectProps) => (
+  <select
     className={cn(
-      "border-none bg-transparent font-medium text-muted-foreground shadow-none transition-colors",
-      "hover:bg-accent hover:text-foreground aria-expanded:bg-accent aria-expanded:text-foreground",
+      "border-none bg-transparent font-medium text-muted-foreground shadow-none transition-colors outline-none",
       className
     )}
     {...props}
   />
 );
 
-export type PromptInputSelectContentProps = ComponentProps<
-  typeof SelectContent
->;
+export type PromptInputSelectTriggerProps = HTMLAttributes<HTMLButtonElement>;
+
+export const PromptInputSelectTrigger = ({
+  className,
+  children,
+  ...props
+}: PromptInputSelectTriggerProps) => (
+  <button
+    className={cn(
+      "inline-flex items-center justify-between gap-1",
+      className
+    )}
+    type="button"
+    {...props}
+  >
+    {children}
+  </button>
+);
+
+export type PromptInputSelectContentProps = HTMLAttributes<HTMLDivElement>;
 
 export const PromptInputSelectContent = ({
   className,
   ...props
 }: PromptInputSelectContentProps) => (
-  <SelectContent className={cn(className)} {...props} />
+  <div className={cn(className)} {...props} />
 );
 
-export type PromptInputSelectItemProps = ComponentProps<typeof SelectItem>;
+export type PromptInputSelectItemProps = HTMLAttributes<HTMLOptionElement>;
 
 export const PromptInputSelectItem = ({
   className,
   ...props
 }: PromptInputSelectItemProps) => (
-  <SelectItem className={cn(className)} {...props} />
+  <option className={cn(className)} {...props} />
 );
 
-export type PromptInputSelectValueProps = ComponentProps<typeof SelectValue>;
+export type PromptInputSelectValueProps = HTMLAttributes<HTMLSpanElement>;
 
 export const PromptInputSelectValue = ({
   className,
+  children,
   ...props
 }: PromptInputSelectValueProps) => (
-  <SelectValue className={cn(className)} {...props} />
+  <span className={cn(className)} {...props}>
+    {children}
+  </span>
 );
 
-export type PromptInputHoverCardProps = ComponentProps<typeof HoverCard>;
+export type PromptInputHoverCardProps = HTMLAttributes<HTMLDivElement>;
 
 export const PromptInputHoverCard = ({
-  openDelay = 0,
-  closeDelay = 0,
   ...props
 }: PromptInputHoverCardProps) => (
-  <HoverCard closeDelay={closeDelay} openDelay={openDelay} {...props} />
+  <div {...props} />
 );
 
-export type PromptInputHoverCardTriggerProps = ComponentProps<
-  typeof HoverCardTrigger
->;
+export type PromptInputHoverCardTriggerProps = HTMLAttributes<HTMLDivElement>;
 
-export const PromptInputHoverCardTrigger = (
-  props: PromptInputHoverCardTriggerProps
-) => <HoverCardTrigger {...props} />;
+export const PromptInputHoverCardTrigger = ({
+  ...props
+}: PromptInputHoverCardTriggerProps) => <div {...props} />;
 
-export type PromptInputHoverCardContentProps = ComponentProps<
-  typeof HoverCardContent
->;
+export type PromptInputHoverCardContentProps = HTMLAttributes<HTMLDivElement>;
 
 export const PromptInputHoverCardContent = ({
-  align = "start",
   ...props
 }: PromptInputHoverCardContentProps) => (
-  <HoverCardContent align={align} {...props} />
+  <div {...props} />
 );
 
 export type PromptInputTabsListProps = HTMLAttributes<HTMLDivElement>;
@@ -1277,65 +1235,63 @@ export const PromptInputTabItem = ({
   />
 );
 
-export type PromptInputCommandProps = ComponentProps<typeof Command>;
+export type PromptInputCommandProps = HTMLAttributes<HTMLDivElement>;
 
 export const PromptInputCommand = ({
   className,
   ...props
-}: PromptInputCommandProps) => <Command className={cn(className)} {...props} />;
+}: PromptInputCommandProps) => <div className={cn(className)} {...props} />;
 
-export type PromptInputCommandInputProps = ComponentProps<typeof CommandInput>;
+export type PromptInputCommandInputProps = HTMLAttributes<HTMLInputElement>;
 
 export const PromptInputCommandInput = ({
   className,
   ...props
 }: PromptInputCommandInputProps) => (
-  <CommandInput className={cn(className)} {...props} />
+  <input className={cn(className)} {...props} />
 );
 
-export type PromptInputCommandListProps = ComponentProps<typeof CommandList>;
+export type PromptInputCommandListProps = HTMLAttributes<HTMLDivElement>;
 
 export const PromptInputCommandList = ({
   className,
   ...props
 }: PromptInputCommandListProps) => (
-  <CommandList className={cn(className)} {...props} />
+  <div className={cn(className)} {...props} />
 );
 
-export type PromptInputCommandEmptyProps = ComponentProps<typeof CommandEmpty>;
+export type PromptInputCommandEmptyProps = HTMLAttributes<HTMLDivElement>;
 
 export const PromptInputCommandEmpty = ({
   className,
   ...props
 }: PromptInputCommandEmptyProps) => (
-  <CommandEmpty className={cn(className)} {...props} />
+  <div className={cn(className)} {...props} />
 );
 
-export type PromptInputCommandGroupProps = ComponentProps<typeof CommandGroup>;
+export type PromptInputCommandGroupProps = HTMLAttributes<HTMLDivElement>;
 
 export const PromptInputCommandGroup = ({
   className,
   ...props
 }: PromptInputCommandGroupProps) => (
-  <CommandGroup className={cn(className)} {...props} />
+  <div className={cn(className)} {...props} />
 );
 
-export type PromptInputCommandItemProps = ComponentProps<typeof CommandItem>;
+export type PromptInputCommandItemProps = HTMLAttributes<HTMLDivElement>;
 
 export const PromptInputCommandItem = ({
   className,
   ...props
 }: PromptInputCommandItemProps) => (
-  <CommandItem className={cn(className)} {...props} />
+  <div className={cn(className)} {...props} />
 );
 
-export type PromptInputCommandSeparatorProps = ComponentProps<
-  typeof CommandSeparator
->;
+export type PromptInputCommandSeparatorProps = HTMLAttributes<HTMLHRElement>;
 
 export const PromptInputCommandSeparator = ({
   className,
   ...props
 }: PromptInputCommandSeparatorProps) => (
-  <CommandSeparator className={cn(className)} {...props} />
+  <hr className={cn(className)} {...props} />
 );

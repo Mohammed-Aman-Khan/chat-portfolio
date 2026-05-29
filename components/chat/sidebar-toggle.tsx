@@ -1,35 +1,25 @@
-import type { ComponentProps } from "react";
+"use client";
 
-import { type SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Button } from "../ui/button";
+import { Tooltip } from "@heroui/react";
 import { SidebarLeftIcon } from "./icons";
 
 export function SidebarToggle({
   className,
-}: ComponentProps<typeof SidebarTrigger>) {
-  const { toggleSidebar } = useSidebar();
-
+}: {
+  className?: string;
+}) {
   return (
     <Tooltip>
-      <TooltipTrigger asChild>
-        <Button
-          className={className}
-          data-testid="sidebar-toggle-button"
-          onClick={toggleSidebar}
-          size="icon-sm"
-          variant="outline"
-        >
-          <SidebarLeftIcon size={16} />
-        </Button>
-      </TooltipTrigger>
-      <TooltipContent align="start" className="hidden md:block">
+      <button
+        className={className}
+        data-testid="sidebar-toggle-button"
+        type="button"
+      >
+        <SidebarLeftIcon size={16} />
+      </button>
+      <Tooltip.Content>
         Toggle Sidebar
-      </TooltipContent>
+      </Tooltip.Content>
     </Tooltip>
   );
 }

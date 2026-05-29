@@ -1,5 +1,4 @@
 import { tool, type UIMessageStreamWriter } from "ai";
-import type { Session } from "next-auth";
 import { z } from "zod";
 import {
   artifactKinds,
@@ -9,13 +8,11 @@ import type { ChatMessage } from "@/lib/types";
 import { generateUUID } from "@/lib/utils";
 
 type CreateDocumentProps = {
-  session: Session;
   dataStream: UIMessageStreamWriter<ChatMessage>;
   modelId: string;
 };
 
 export const createDocument = ({
-  session,
   dataStream,
   modelId,
 }: CreateDocumentProps) =>
@@ -70,7 +67,6 @@ export const createDocument = ({
         id,
         title,
         dataStream,
-        session,
         modelId,
       });
 

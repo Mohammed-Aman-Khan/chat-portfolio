@@ -3,12 +3,8 @@
 import type { DynamicToolUIPart, ToolUIPart } from "ai";
 import type { ComponentProps, ReactNode } from "react";
 
-import { Badge } from "@/components/ui/badge";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import { Chip } from "@heroui/react";
+import { Disclosure, DisclosureTrigger, DisclosureContent } from "@heroui/react";
 import { cn } from "@/lib/utils";
 import {
   CheckCircleIcon,
@@ -22,10 +18,10 @@ import { isValidElement } from "react";
 
 import { CodeBlock } from "./code-block";
 
-export type ToolProps = ComponentProps<typeof Collapsible>;
+export type ToolProps = ComponentProps<typeof Disclosure>;
 
 export const Tool = ({ className, ...props }: ToolProps) => (
-  <Collapsible
+  <Disclosure
     className={cn("group not-prose mb-4 w-full rounded-md border", className)}
     {...props}
   />
@@ -66,10 +62,10 @@ const statusIcons: Record<ToolPart["state"], ReactNode> = {
 };
 
 export const getStatusBadge = (status: ToolPart["state"]) => (
-  <Badge className="gap-1.5 rounded-full text-xs" variant="secondary">
+  <Chip className="gap-1.5 rounded-full text-xs" variant="secondary">
     {statusIcons[status]}
     {statusLabels[status]}
-  </Badge>
+  </Chip>
 );
 
 export const ToolHeader = ({
@@ -84,7 +80,7 @@ export const ToolHeader = ({
     type === "dynamic-tool" ? toolName : type.split("-").slice(1).join("-");
 
   return (
-    <CollapsibleTrigger
+    <DisclosureTrigger
       className={cn(
         "flex w-full items-center justify-between gap-4 p-3",
         className
@@ -97,14 +93,14 @@ export const ToolHeader = ({
         {getStatusBadge(state)}
       </div>
       <ChevronDownIcon className="size-4 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
-    </CollapsibleTrigger>
+    </DisclosureTrigger>
   );
 };
 
-export type ToolContentProps = ComponentProps<typeof CollapsibleContent>;
+export type ToolContentProps = ComponentProps<typeof DisclosureContent>;
 
 export const ToolContent = ({ className, ...props }: ToolContentProps) => (
-  <CollapsibleContent
+  <DisclosureContent
     className={cn(
       "data-[state=closed]:fade-out-0 data-[state=closed]:slide-out-to-top-2 data-[state=open]:slide-in-from-top-2 space-y-4 p-4 text-popover-foreground outline-none data-[state=closed]:animate-out data-[state=open]:animate-in",
       className

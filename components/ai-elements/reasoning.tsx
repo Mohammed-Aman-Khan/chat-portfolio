@@ -3,10 +3,7 @@
 import type { ComponentProps, HTMLAttributes, ReactNode } from "react";
 
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
-import {
-  Collapsible,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import { Disclosure, DisclosureTrigger, DisclosureContent } from "@heroui/react";
 import { cn } from "@/lib/utils";
 import { cjk } from "@streamdown/cjk";
 import { code } from "@streamdown/code";
@@ -44,7 +41,7 @@ export const useReasoning = () => {
   return context;
 };
 
-export type ReasoningProps = ComponentProps<typeof Collapsible> & {
+export type ReasoningProps = ComponentProps<typeof Disclosure> & {
   isStreaming?: boolean;
   open?: boolean;
   defaultOpen?: boolean;
@@ -135,21 +132,21 @@ export const Reasoning = memo(
 
     return (
       <ReasoningContext.Provider value={contextValue}>
-        <Collapsible
+        <Disclosure
           className={cn("not-prose", className)}
-          onOpenChange={handleOpenChange}
-          open={isOpen}
+          isExpanded={isOpen}
+          onExpandedChange={handleOpenChange}
           {...props}
         >
           {children}
-        </Collapsible>
+        </Disclosure>
       </ReasoningContext.Provider>
     );
   }
 );
 
 export type ReasoningTriggerProps = ComponentProps<
-  typeof CollapsibleTrigger
+  typeof DisclosureTrigger
 > & {
   getThinkingMessage?: (isStreaming: boolean, duration?: number) => ReactNode;
 };
@@ -174,7 +171,7 @@ export const ReasoningTrigger = memo(
     const { isStreaming, isOpen, duration } = useReasoning();
 
     return (
-      <CollapsibleTrigger
+      <DisclosureTrigger
         className={cn(
           "flex w-full items-center gap-2 text-muted-foreground text-[13px] leading-[1.65] transition-colors hover:text-foreground",
           className
@@ -192,7 +189,7 @@ export const ReasoningTrigger = memo(
             />
           </>
         )}
-      </CollapsibleTrigger>
+      </DisclosureTrigger>
     );
   }
 );

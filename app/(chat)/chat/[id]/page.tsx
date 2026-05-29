@@ -1,3 +1,5 @@
-export default function Page() {
-  return null;
+import { ChatPage } from "@/components/chat/chat-page";
+
+export default function ChatIdPage() {
+  return <ChatPage />;
 }

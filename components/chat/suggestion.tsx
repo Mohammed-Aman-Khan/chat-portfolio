@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 
 import type { UISuggestion } from "@/lib/editor/suggestions";
-import { Button } from "../ui/button";
+import { Button } from "@heroui/react";
 import { CrossIcon, SparklesIcon } from "./icons";
 
 export const SuggestionDialog = ({
@@ -59,14 +59,14 @@ export const SuggestionDialog = ({
             <Button
               className="w-fit rounded-full px-3 py-1.5"
               onClick={onApply}
-              variant="outline"
+              variant="secondary"
             >
               Apply
             </Button>
             <Button
               className="w-fit rounded-full px-3 py-1.5"
               onClick={onClose}
-              variant="ghost"
+              variant="tertiary"
             >
               Dismiss
             </Button>

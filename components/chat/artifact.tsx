@@ -18,16 +18,15 @@ import { imageArtifact } from "@/artifacts/image/client";
 import { sheetArtifact } from "@/artifacts/sheet/client";
 import { textArtifact } from "@/artifacts/text/client";
 import { useArtifact } from "@/hooks/use-artifact";
-import type { Document, Vote } from "@/lib/db/schema";
+import type { Document, Vote } from "@/lib/types-db";
 import type { Attachment, ChatMessage } from "@/lib/types";
 import { fetcher } from "@/lib/utils";
-import { useSidebar } from "../ui/sidebar";
 import { ArtifactActions } from "./artifact-actions";
 import { ArtifactCloseButton } from "./artifact-close-button";
 import { LoaderIcon } from "./icons";
 import { Toolbar } from "./toolbar";
 import { VersionFooter } from "./version-footer";
-import type { VisibilityType } from "./visibility-selector";
+import type { VisibilityType } from "@/lib/types";
 
 export const artifactDefinitions = [
   textArtifact,
@@ -104,7 +103,7 @@ function PureArtifact({
   const [document, setDocument] = useState<Document | null>(null);
   const [currentVersionIndex, setCurrentVersionIndex] = useState(-1);
 
-  const { state: sidebarState } = useSidebar();
+
   const artifactContentRef = useRef<HTMLDivElement>(null);
   const userScrolledArtifact = useRef(false);
   const [isContentDirty, setIsContentDirty] = useState(false);
@@ -307,8 +306,7 @@ function PureArtifact({
 
   const artifactPanel = (
     <>
-      {sidebarState !== "collapsed" && (
-        <div className="flex h-[calc(3.5rem+1px)] shrink-0 items-center justify-between border-b border-border/50 px-4">
+      <div className="flex h-[calc(3.5rem+1px)] shrink-0 items-center justify-between border-b border-border/50 px-4">
           <div className="flex items-center gap-3">
             <ArtifactCloseButton />
             <div className="flex flex-col gap-0.5">
@@ -344,7 +342,6 @@ function PureArtifact({
             </div>
           </div>
         </div>
-      )}
       <div
         className="relative flex-1 overflow-y-auto bg-background"
         data-slot="artifact-content"

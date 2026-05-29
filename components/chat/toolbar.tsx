@@ -14,12 +14,7 @@ import {
   useState,
 } from "react";
 import { useOnClickOutside } from "usehooks-ts";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip } from "@heroui/react";
 import type { ChatMessage } from "@/lib/types";
 import { type ArtifactKind, artifactDefinitions } from "./artifact";
 import type { ArtifactToolbarItem } from "./create-artifact";
@@ -81,48 +76,42 @@ const Tool = ({
   };
 
   return (
-    <Tooltip open={isHovered && !isAnimating}>
-      <TooltipTrigger asChild>
-        <motion.div
-          animate={{ opacity: 1, transition: { delay: 0.1 } }}
-          className={cx("rounded-full p-3", {
-            "bg-primary text-primary-foreground!": selectedTool === description,
-          })}
-          exit={{
-            scale: 0.9,
-            opacity: 0,
-            transition: { duration: 0.1 },
-          }}
-          initial={{ scale: 1, opacity: 0 }}
-          onClick={() => {
+    <Tooltip isOpen={isHovered && !isAnimating}>
+      <motion.div
+        animate={{ opacity: 1, transition: { delay: 0.1 } }}
+        className={cx("rounded-full p-3", {
+          "bg-primary text-primary-foreground!": selectedTool === description,
+        })}
+        exit={{
+          scale: 0.9,
+          opacity: 0,
+          transition: { duration: 0.1 },
+        }}
+        initial={{ scale: 1, opacity: 0 }}
+        onClick={() => {
+          handleSelect();
+        }}
+        onHoverEnd={() => {
+          if (selectedTool !== description) {
+            setIsHovered(false);
+          }
+        }}
+        onHoverStart={() => {
+          setIsHovered(true);
+        }}
+        onKeyDown={(event) => {
+          if (event.key === "Enter") {
             handleSelect();
-          }}
-          onHoverEnd={() => {
-            if (selectedTool !== description) {
-              setIsHovered(false);
-            }
-          }}
-          onHoverStart={() => {
-            setIsHovered(true);
-          }}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              handleSelect();
-            }
-          }}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          {selectedTool === description ? <ArrowUpIcon /> : icon}
-        </motion.div>
-      </TooltipTrigger>
-      <TooltipContent
-        className="rounded-2xl bg-foreground p-3 px-4 text-background"
-        side="left"
-        sideOffset={16}
+          }
+        }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
       >
+        {selectedTool === description ? <ArrowUpIcon /> : icon}
+      </motion.div>
+      <Tooltip.Content placement="left">
         {description}
-      </TooltipContent>
+      </Tooltip.Content>
     </Tooltip>
   );
 };
@@ -179,9 +168,7 @@ const ReadingLevelSelector = ({
         </motion.div>
       ))}
 
-      <TooltipProvider>
-        <Tooltip open={!isAnimating}>
-          <TooltipTrigger asChild>
+      <Tooltip isOpen={!isAnimating}>
             <motion.div
               className={cx(
                 "absolute flex flex-row items-center rounded-full border bg-background p-3",
@@ -226,16 +213,10 @@ const ReadingLevelSelector = ({
             >
               {currentLevel === 2 ? <SummarizeIcon /> : <ArrowUpIcon />}
             </motion.div>
-          </TooltipTrigger>
-          <TooltipContent
-            className="rounded-2xl bg-foreground p-3 px-4 text-background text-sm"
-            side="left"
-            sideOffset={16}
-          >
-            {LEVELS[currentLevel]}
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+            <Tooltip.Content placement="left">
+              {LEVELS[currentLevel]}
+            </Tooltip.Content>
+          </Tooltip>
     </div>
   );
 };
@@ -382,9 +363,8 @@ const PureToolbar = ({
   }
 
   return (
-    <TooltipProvider delayDuration={0}>
-      <motion.div
-        animate={{ opacity: 1, y: 0, scale: 1 }}
+    <motion.div
+      animate={{ opacity: 1, y: 0, scale: 1 }}
         className="fixed right-6 bottom-6 z-50 flex cursor-pointer flex-col items-center rounded-3xl border bg-background py-1 shadow-lg"
         exit={{ opacity: 0, y: -20, transition: { duration: 0.1 } }}
         initial={{ opacity: 0, y: -20, scale: 1 }}
@@ -458,7 +438,6 @@ const PureToolbar = ({
           </>
         )}
       </motion.div>
-    </TooltipProvider>
   );
 };
 

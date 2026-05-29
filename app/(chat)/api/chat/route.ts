@@ -1,4 +1,3 @@
-import { geolocation, ipAddress } from "@vercel/functions";
 import {
   convertToModelMessages,
   createUIMessageStream,
@@ -7,11 +6,8 @@ import {
   stepCountIs,
   streamText,
 } from "ai";
-import { checkBotId } from "botid/server";
 import { after } from "next/server";
 import { createResumableStreamContext } from "resumable-stream";
-import { auth, type UserType } from "@/app/(auth)/auth";
-import { entitlementsByUserType } from "@/lib/ai/entitlements";
 import {
   allowedModelIds,
   chatModels,
@@ -25,7 +21,7 @@ import { editDocument } from "@/lib/ai/tools/edit-document";
 import { getWeather } from "@/lib/ai/tools/get-weather";
 import { requestSuggestions } from "@/lib/ai/tools/request-suggestions";
 import { updateDocument } from "@/lib/ai/tools/update-document";
-import { isProductionEnvironment } from "@/lib/constants";
+import { PORTFOLIO_USER_ID, isProductionEnvironment } from "@/lib/constants";
 import {
   createStreamId,
   deleteChatById,
@@ -36,10 +32,9 @@ import {
   saveMessages,
   updateChatTitleById,
   updateMessage,
-} from "@/lib/db/queries";
-import type { DBMessage } from "@/lib/db/schema";
+} from "@/lib/store";
+import type { DBMessage } from "@/lib/types-db";
 import { ChatbotError } from "@/lib/errors";
-import { checkIpRateLimit } from "@/lib/ratelimit";
 import type { ChatMessage } from "@/lib/types";
 import { convertToUIMessages, generateUUID } from "@/lib/utils";
 import { generateTitleFromUserMessage } from "../../actions";
@@ -71,29 +66,16 @@ export async function POST(request: Request) {
     const { id, message, messages, selectedChatModel, selectedVisibilityType } =
       requestBody;
 
-    const [, session] = await Promise.all([
-      checkBotId().catch(() => null),
-      auth(),
-    ]);
-
-    if (!session?.user) {
-      return new ChatbotError("unauthorized:chat").toResponse();
-    }
-
     const chatModel = allowedModelIds.has(selectedChatModel)
       ? selectedChatModel
       : DEFAULT_CHAT_MODEL;
 
-    await checkIpRateLimit(ipAddress(request));
-
-    const userType: UserType = session.user.type;
-
     const messageCount = await getMessageCountByUserId({
-      id: session.user.id,
+      id: PORTFOLIO_USER_ID,
       differenceInHours: 1,
     });
 
-    if (messageCount > entitlementsByUserType[userType].maxMessagesPerHour) {
+    if (messageCount > 10) {
       return new ChatbotError("rate_limit:chat").toResponse();
     }
 
@@ -104,14 +86,14 @@ export async function POST(request: Request) {
     let titlePromise: Promise<string> | null = null;
 
     if (chat) {
-      if (chat.userId !== session.user.id) {
+      if (chat.userId !== PORTFOLIO_USER_ID) {
         return new ChatbotError("forbidden:chat").toResponse();
       }
       messagesFromDb = await getMessagesByChatId({ id });
     } else if (message?.role === "user") {
       await saveChat({
         id,
-        userId: session.user.id,
+        userId: PORTFOLIO_USER_ID,
         title: "New chat",
         visibility: selectedVisibilityType,
       });
@@ -156,14 +138,7 @@ export async function POST(request: Request) {
       ];
     }
 
-    const { longitude, latitude, city, country } = geolocation(request);
-
-    const requestHints: RequestHints = {
-      longitude,
-      latitude,
-      city,
-      country,
-    };
+    const requestHints: RequestHints = {};
 
     if (message?.role === "user") {
       await saveMessages({
@@ -216,19 +191,10 @@ export async function POST(request: Request) {
           },
           tools: {
             getWeather,
-            createDocument: createDocument({
-              session,
-              dataStream,
-              modelId: chatModel,
-            }),
-            editDocument: editDocument({ dataStream, session }),
-            updateDocument: updateDocument({
-              session,
-              dataStream,
-              modelId: chatModel,
-            }),
+            createDocument: createDocument({ dataStream, modelId: chatModel }),
+            editDocument: editDocument({ dataStream }),
+            updateDocument: updateDocument({ dataStream, modelId: chatModel }),
             requestSuggestions: requestSuggestions({
-              session,
               dataStream,
               modelId: chatModel,
             }),
@@ -354,15 +320,9 @@ export async function DELETE(request: Request) {
     return new ChatbotError("bad_request:api").toResponse();
   }
 
-  const session = await auth();
-
-  if (!session?.user) {
-    return new ChatbotError("unauthorized:chat").toResponse();
-  }
-
   const chat = await getChatById({ id });
 
-  if (chat?.userId !== session.user.id) {
+  if (chat?.userId !== PORTFOLIO_USER_ID) {
     return new ChatbotError("forbidden:chat").toResponse();
   }
 

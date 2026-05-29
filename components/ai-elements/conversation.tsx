@@ -2,7 +2,7 @@
 
 import type { ComponentProps } from "react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@heroui/react";
 import { cn } from "@/lib/utils";
 import { ArrowDownIcon, DownloadIcon } from "lucide-react";
 import { useCallback } from "react";
@@ -89,9 +89,9 @@ export const ConversationScrollButton = ({
           className
         )}
         onClick={handleScrollToBottom}
-        size="icon"
+        size="sm"
         type="button"
-        variant="outline"
+        variant="secondary"
         {...props}
       >
         <ArrowDownIcon className="size-4" />
@@ -156,9 +156,9 @@ export const ConversationDownload = ({
         className
       )}
       onClick={handleDownload}
-      size="icon"
+      size="sm"
       type="button"
-      variant="outline"
+      variant="secondary"
       {...props}
     >
       {children ?? <DownloadIcon className="size-4" />}

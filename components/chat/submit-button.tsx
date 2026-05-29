@@ -4,7 +4,7 @@ import { useFormStatus } from "react-dom";
 
 import { LoaderIcon } from "@/components/chat/icons";
 
-import { Button } from "../ui/button";
+import { Button } from "@heroui/react";
 
 export function SubmitButton({
   children,
@@ -19,7 +19,7 @@ export function SubmitButton({
     <Button
       aria-disabled={pending || isSuccessful}
       className="relative"
-      disabled={pending || isSuccessful}
+      isDisabled={pending || isSuccessful}
       type={pending ? "button" : "submit"}
     >
       {children}

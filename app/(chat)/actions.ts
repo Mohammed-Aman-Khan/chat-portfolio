@@ -2,8 +2,8 @@
 
 import { generateText, type UIMessage } from "ai";
 import { cookies } from "next/headers";
-import { auth } from "@/app/(auth)/auth";
-import type { VisibilityType } from "@/components/chat/visibility-selector";
+import { PORTFOLIO_USER_ID } from "@/lib/constants";
+import type { VisibilityType } from "@/lib/types";
 import { titleModel } from "@/lib/ai/models";
 import { titlePrompt } from "@/lib/ai/prompts";
 import { getTitleModel } from "@/lib/ai/providers";
@@ -12,7 +12,7 @@ import {
   getChatById,
   getMessageById,
   updateChatVisibilityById,
-} from "@/lib/db/queries";
+} from "@/lib/store";
 import { getTextFromMessage } from "@/lib/utils";
 
 export async function saveChatModelAsCookie(model: string) {
@@ -40,18 +40,13 @@ export async function generateTitleFromUserMessage({
 }
 
 export async function deleteTrailingMessages({ id }: { id: string }) {
-  const session = await auth();
-  if (!session?.user?.id) {
-    throw new Error("Unauthorized");
-  }
-
   const [message] = await getMessageById({ id });
   if (!message) {
     throw new Error("Message not found");
   }
 
   const chat = await getChatById({ id: message.chatId });
-  if (!chat || chat.userId !== session.user.id) {
+  if (!chat || chat.userId !== PORTFOLIO_USER_ID) {
     throw new Error("Unauthorized");
   }
 
@@ -68,13 +63,8 @@ export async function updateChatVisibility({
   chatId: string;
   visibility: VisibilityType;
 }) {
-  const session = await auth();
-  if (!session?.user?.id) {
-    throw new Error("Unauthorized");
-  }
-
   const chat = await getChatById({ id: chatId });
-  if (!chat || chat.userId !== session.user.id) {
+  if (!chat || chat.userId !== PORTFOLIO_USER_ID) {
     throw new Error("Unauthorized");
   }
 

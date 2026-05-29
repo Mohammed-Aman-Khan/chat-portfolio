@@ -1,5 +1,5 @@
-import { auth } from "@/app/(auth)/auth";
-import { getChatById, getMessagesByChatId } from "@/lib/db/queries";
+import { PORTFOLIO_USER_ID } from "@/lib/constants";
+import { getChatById, getMessagesByChatId } from "@/lib/store";
 import { convertToUIMessages } from "@/lib/utils";
 
 export async function GET(request: Request) {
@@ -10,8 +10,7 @@ export async function GET(request: Request) {
     return Response.json({ error: "chatId required" }, { status: 400 });
   }
 
-  const [session, chat, messages] = await Promise.all([
-    auth(),
+  const [chat, messages] = await Promise.all([
     getChatById({ id: chatId }),
     getMessagesByChatId({ id: chatId }),
   ]);
@@ -27,12 +26,12 @@ export async function GET(request: Request) {
 
   if (
     chat.visibility === "private" &&
-    (!session?.user || session.user.id !== chat.userId)
+    PORTFOLIO_USER_ID !== chat.userId
   ) {
     return Response.json({ error: "forbidden" }, { status: 403 });
   }
 
-  const isReadonly = !session?.user || session.user.id !== chat.userId;
+  const isReadonly = PORTFOLIO_USER_ID !== chat.userId;
 
   return Response.json({
     messages: convertToUIMessages(messages),

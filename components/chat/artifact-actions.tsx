@@ -1,7 +1,7 @@
 import { memo, useState } from "react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { Tooltip } from "@heroui/react";
 import { artifactDefinitions, type UIArtifact } from "./artifact";
 import type { ArtifactActionContext } from "./create-artifact";
 
@@ -56,38 +56,34 @@ function PureArtifactActions({
 
         return (
           <Tooltip key={action.description}>
-            <TooltipTrigger asChild>
-              <button
-                className={cn(
-                  "flex items-center justify-center rounded-full p-3 text-muted-foreground transition-all duration-150",
-                  "hover:text-foreground",
-                  "active:scale-95",
-                  "disabled:pointer-events-none disabled:opacity-30",
-                  {
-                    "text-foreground":
-                      mode === "diff" && action.description === "View changes",
-                  }
-                )}
-                disabled={disabled}
-                onClick={async () => {
-                  setIsLoading(true);
+            <button
+              className={cn(
+                "flex items-center justify-center rounded-full p-3 text-muted-foreground transition-all duration-150",
+                "hover:text-foreground",
+                "active:scale-95",
+                "disabled:pointer-events-none disabled:opacity-30",
+                {
+                  "text-foreground":
+                    mode === "diff" && action.description === "View changes",
+                }
+              )}
+              disabled={disabled}
+              onClick={async () => {
+                setIsLoading(true);
 
-                  try {
-                    await Promise.resolve(action.onClick(actionContext));
-                  } catch (_error) {
-                    toast.error("Failed to execute action");
-                  } finally {
-                    setIsLoading(false);
-                  }
-                }}
-                type="button"
-              >
-                {action.icon}
-              </button>
-            </TooltipTrigger>
-            <TooltipContent side="left" sideOffset={8}>
-              {action.description}
-            </TooltipContent>
+                try {
+                  await Promise.resolve(action.onClick(actionContext));
+                } catch (_error) {
+                  toast.error("Failed to execute action");
+                } finally {
+                  setIsLoading(false);
+                }
+              }}
+              type="button"
+            >
+              {action.icon}
+            </button>
+            <Tooltip.Content placement="left">{action.description}</Tooltip.Content>
           </Tooltip>
         );
       })}

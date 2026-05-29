@@ -8,14 +8,7 @@ import type {
   ThemedToken,
 } from "shiki";
 
-import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Button } from "@heroui/react";
 import { cn } from "@/lib/utils";
 import { CheckIcon, CopyIcon } from "lucide-react";
 import {
@@ -494,8 +487,8 @@ export const CodeBlockCopyButton = ({
     <Button
       className={cn("shrink-0", className)}
       onClick={copyToClipboard}
-      size="icon"
-      variant="ghost"
+      size="sm"
+      variant="tertiary"
       {...props}
     >
       {children ?? <Icon size={14} />}
@@ -503,53 +496,64 @@ export const CodeBlockCopyButton = ({
   );
 };
 
-export type CodeBlockLanguageSelectorProps = ComponentProps<typeof Select>;
+export type CodeBlockLanguageSelectorProps = ComponentProps<"div">;
 
-export const CodeBlockLanguageSelector = (
-  props: CodeBlockLanguageSelectorProps
-) => <Select {...props} />;
+export const CodeBlockLanguageSelector = ({
+  className,
+  ...props
+}: CodeBlockLanguageSelectorProps) => <div className={cn(className)} {...props} />;
 
-export type CodeBlockLanguageSelectorTriggerProps = ComponentProps<
-  typeof SelectTrigger
->;
+export type CodeBlockLanguageSelectorTriggerProps = HTMLAttributes<HTMLButtonElement>;
 
 export const CodeBlockLanguageSelectorTrigger = ({
   className,
+  children,
   ...props
 }: CodeBlockLanguageSelectorTriggerProps) => (
-  <SelectTrigger
+  <button
     className={cn(
-      "h-7 border-none bg-transparent px-2 text-xs shadow-none",
+      "h-7 border-none bg-transparent px-2 text-xs shadow-none inline-flex items-center gap-1",
       className
     )}
-    size="sm"
+    type="button"
     {...props}
-  />
+  >
+    {children}
+  </button>
 );
 
-export type CodeBlockLanguageSelectorValueProps = ComponentProps<
-  typeof SelectValue
->;
+export type CodeBlockLanguageSelectorValueProps = HTMLAttributes<HTMLSpanElement>;
 
-export const CodeBlockLanguageSelectorValue = (
-  props: CodeBlockLanguageSelectorValueProps
-) => <SelectValue {...props} />;
+export const CodeBlockLanguageSelectorValue = ({
+  className,
+  children,
+  ...props
+}: CodeBlockLanguageSelectorValueProps) => (
+  <span className={cn(className)} {...props}>
+    {children}
+  </span>
+);
 
-export type CodeBlockLanguageSelectorContentProps = ComponentProps<
-  typeof SelectContent
->;
+export type CodeBlockLanguageSelectorContentProps = HTMLAttributes<HTMLDivElement>;
 
 export const CodeBlockLanguageSelectorContent = ({
-  align = "end",
+  className,
+  children,
   ...props
 }: CodeBlockLanguageSelectorContentProps) => (
-  <SelectContent align={align} {...props} />
+  <div className={cn(className)} {...props}>
+    {children}
+  </div>
 );
 
-export type CodeBlockLanguageSelectorItemProps = ComponentProps<
-  typeof SelectItem
->;
+export type CodeBlockLanguageSelectorItemProps = HTMLAttributes<HTMLDivElement>;
 
-export const CodeBlockLanguageSelectorItem = (
-  props: CodeBlockLanguageSelectorItemProps
-) => <SelectItem {...props} />;
+export const CodeBlockLanguageSelectorItem = ({
+  className,
+  children,
+  ...props
+}: CodeBlockLanguageSelectorItemProps) => (
+  <div className={cn("cursor-pointer", className)} {...props}>
+    {children}
+  </div>
+);

@@ -1,5 +1,5 @@
-import { auth } from "@/app/(auth)/auth";
-import { getSuggestionsByDocumentId } from "@/lib/db/queries";
+import { PORTFOLIO_USER_ID } from "@/lib/constants";
+import { getSuggestionsByDocumentId } from "@/lib/store";
 import { ChatbotError } from "@/lib/errors";
 
 export async function GET(request: Request) {
@@ -13,12 +13,6 @@ export async function GET(request: Request) {
     ).toResponse();
   }
 
-  const session = await auth();
-
-  if (!session?.user) {
-    return new ChatbotError("unauthorized:suggestions").toResponse();
-  }
-
   const suggestions = await getSuggestionsByDocumentId({
     documentId,
   });
@@ -29,7 +23,7 @@ export async function GET(request: Request) {
     return Response.json([], { status: 200 });
   }
 
-  if (suggestion.userId !== session.user.id) {
+  if (suggestion.userId !== PORTFOLIO_USER_ID) {
     return new ChatbotError("forbidden:api").toResponse();
   }
 

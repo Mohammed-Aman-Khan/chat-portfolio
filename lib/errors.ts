@@ -8,7 +8,6 @@ export type ErrorType =
 
 export type Surface =
   | "chat"
-  | "auth"
   | "api"
   | "stream"
   | "database"
@@ -25,7 +24,6 @@ export type ErrorVisibility = "response" | "log" | "none";
 export const visibilityBySurface: Record<Surface, ErrorVisibility> = {
   database: "log",
   chat: "response",
-  auth: "response",
   stream: "response",
   api: "response",
   history: "response",
@@ -86,11 +84,6 @@ export function getMessageByErrorCode(errorCode: ErrorCode): string {
 
     case "bad_request:activate_gateway":
       return "AI Gateway requires a valid credit card on file to service requests. Please visit https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dadd-credit-card to add a card and unlock your free credits.";
-
-    case "unauthorized:auth":
-      return "You need to sign in before continuing.";
-    case "forbidden:auth":
-      return "Your account does not have access to this feature.";
 
     case "rate_limit:chat":
       return "You've reached the message limit. Come back in 1 hour to continue chatting.";

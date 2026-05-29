@@ -8,8 +8,7 @@ import {
 } from "react";
 import { useArtifactSelector } from "@/hooks/use-artifact";
 import { cn } from "@/lib/utils";
-import { Button } from "../ui/button";
-import { Spinner } from "../ui/spinner";
+import { Button, Spinner } from "@heroui/react";
 import { CrossSmallIcon, TerminalWindowIcon } from "./icons";
 
 export type ConsoleOutputContent = {
@@ -118,8 +117,8 @@ export function Console({ consoleOutputs, setConsoleOutputs }: ConsoleProps) {
           <Button
             className="size-7 text-muted-foreground/50 hover:text-foreground"
             onClick={() => setConsoleOutputs([])}
-            size="icon-sm"
-            variant="ghost"
+            size="sm"
+            variant="tertiary"
           >
             <CrossSmallIcon />
           </Button>

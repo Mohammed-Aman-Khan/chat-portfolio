@@ -1,6 +1,6 @@
 import Image from "next/image";
 import type { Attachment } from "@/lib/types";
-import { Spinner } from "../ui/spinner";
+import { Spinner } from "@heroui/react";
 import { CrossSmallIcon } from "./icons";
 
 export const PreviewAttachment = ({

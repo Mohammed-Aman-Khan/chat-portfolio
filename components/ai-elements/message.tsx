@@ -3,17 +3,7 @@
 import type { UIMessage } from "ai";
 import type { ComponentProps, HTMLAttributes, ReactElement } from "react";
 
-import { Button } from "@/components/ui/button";
-import {
-  ButtonGroup,
-  ButtonGroupText,
-} from "@/components/ui/button-group";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip } from "@heroui/react";
 import { cn } from "@/lib/utils";
 import { cjk } from "@streamdown/cjk";
 import { code } from "@streamdown/code";
@@ -76,7 +66,7 @@ export const MessageActions = ({
   </div>
 );
 
-export type MessageActionProps = ComponentProps<typeof Button> & {
+export type MessageActionProps = ComponentProps<"button"> & {
   tooltip?: string;
   label?: string;
 };
@@ -85,27 +75,30 @@ export const MessageAction = ({
   tooltip,
   children,
   label,
-  variant = "ghost",
-  size = "icon-sm",
-  ...props
+  className,
+  onClick,
+  ..._props
 }: MessageActionProps) => {
   const button = (
-    <Button size={size} type="button" variant={variant} {...props}>
+    <button
+      type="button"
+      className={cn(
+        "inline-flex items-center justify-center rounded-none border-2 border-black text-sm font-bold transition-all shadow-md hover:shadow active:shadow-none hover:-translate-y-0.5 active:translate-y-0.5 disabled:opacity-50",
+        className
+      )}
+      onClick={onClick}
+    >
       {children}
       <span className="sr-only">{label || tooltip}</span>
-    </Button>
+    </button>
   );
 
   if (tooltip) {
     return (
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>{button}</TooltipTrigger>
-          <TooltipContent>
-            <p>{tooltip}</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <Tooltip>
+        {button}
+        <Tooltip.Content>{tooltip}</Tooltip.Content>
+      </Tooltip>
     );
   }
 
@@ -226,7 +219,7 @@ export const MessageBranchContent = ({
   ));
 };
 
-export type MessageBranchSelectorProps = ComponentProps<typeof ButtonGroup>;
+export type MessageBranchSelectorProps = HTMLAttributes<HTMLDivElement>;
 
 export const MessageBranchSelector = ({
   className,
@@ -240,60 +233,65 @@ export const MessageBranchSelector = ({
   }
 
   return (
-    <ButtonGroup
+    <div
       className={cn(
-        "[&>*:not(:first-child)]:rounded-l-md [&>*:not(:last-child)]:rounded-r-md",
+        "flex items-center gap-0 [&>*:not(:first-child)]:rounded-l-md [&>*:not(:last-child)]:rounded-r-md",
         className
       )}
-      orientation="horizontal"
       {...props}
     />
   );
 };
 
-export type MessageBranchPreviousProps = ComponentProps<typeof Button>;
+export type MessageBranchPreviousProps = ComponentProps<"button">;
 
 export const MessageBranchPrevious = ({
   children,
+  className,
   ...props
 }: MessageBranchPreviousProps) => {
   const { goToPrevious, totalBranches } = useMessageBranch();
 
   return (
-    <Button
+    <button
       aria-label="Previous branch"
       disabled={totalBranches <= 1}
       onClick={goToPrevious}
-      size="icon-sm"
       type="button"
-      variant="ghost"
+      className={cn(
+        "inline-flex items-center justify-center rounded-none border-2 border-black text-sm font-bold transition-all shadow-md hover:shadow active:shadow-none hover:-translate-y-0.5 active:translate-y-0.5 disabled:opacity-50 px-2 py-1 gap-1",
+        className
+      )}
       {...props}
     >
       {children ?? <ChevronLeftIcon size={14} />}
-    </Button>
+    </button>
   );
 };
 
-export type MessageBranchNextProps = ComponentProps<typeof Button>;
+export type MessageBranchNextProps = ComponentProps<"button">;
 
 export const MessageBranchNext = ({
   children,
+  className,
   ...props
 }: MessageBranchNextProps) => {
   const { goToNext, totalBranches } = useMessageBranch();
 
   return (
-    <Button
+    <button
       aria-label="Next branch"
       disabled={totalBranches <= 1}
       onClick={goToNext}
-      size="icon-sm"
       type="button"
-      variant="ghost"
+      className={cn(
+        "inline-flex items-center justify-center rounded-none border-2 border-black text-sm font-bold transition-all shadow-md hover:shadow active:shadow-none hover:-translate-y-0.5 active:translate-y-0.5 disabled:opacity-50 px-2 py-1 gap-1",
+        className
+      )}
       {...props}
     >
       {children ?? <ChevronRightIcon size={14} />}
-    </Button>
+    </button>
   );
 };
 
@@ -306,7 +304,7 @@ export const MessageBranchPage = ({
   const { currentBranch, totalBranches } = useMessageBranch();
 
   return (
-    <ButtonGroupText
+    <span
       className={cn(
         "border-none bg-transparent text-muted-foreground shadow-none",
         className
@@ -314,7 +312,7 @@ export const MessageBranchPage = ({
       {...props}
     >
       {currentBranch + 1} of {totalBranches}
-    </ButtonGroupText>
+    </span>
   );
 };
 
