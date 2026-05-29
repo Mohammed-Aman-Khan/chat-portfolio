@@ -3,7 +3,3 @@
 @import "katex/dist/katex.min.css";
 
 @source "../node_modules/streamdown/dist/index.js";
-
-body {
-  font-family: system-ui, -apple-system, sans-serif;
-}

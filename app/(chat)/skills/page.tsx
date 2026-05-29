@@ -1,5 +1,6 @@
-import { PortfolioPage } from "@/components/chat/portfolio-page";
+import { ThreadPage } from "@/components/chat/thread-page";
 
 export default function SkillsPage() {
-  return <PortfolioPage sectionId="skills" />;
+  const section = "skills";
+  return <ThreadPage sectionId={section} threadId={null} />;
 }
