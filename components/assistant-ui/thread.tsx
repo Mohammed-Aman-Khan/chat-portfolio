@@ -336,7 +336,6 @@ const AssistantActionBar: FC = () => {
       <ActionBarMorePrimitive.Root>
         <ActionBarMorePrimitive.Trigger asChild>
           <TooltipIconButton
-            tooltip="More"
             className="data-[state=open]:bg-accent"
           >
             <MoreHorizontalIcon />
