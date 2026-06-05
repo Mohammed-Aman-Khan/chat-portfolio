@@ -47,6 +47,19 @@ import {
   SquareIcon,
 } from "lucide-react";
 import type { FC } from "react";
+import { useThreadStore } from "@/lib/store";
+
+function ThreadTitleBanner() {
+  const threads = useThreadStore((s) => s.threads);
+  const activeId = useThreadStore((s) => s.activeThreadId);
+  const thread = threads.find((t) => t.id === activeId);
+  if (!thread) return null;
+  return (
+    <div className="mb-6 text-center">
+      <h2 className="font-head text-xl font-semibold">{thread.title}</h2>
+    </div>
+  );
+}
 
 export const Thread: FC = () => {
   return (
@@ -54,8 +67,8 @@ export const Thread: FC = () => {
       className="aui-root aui-thread-root bg-background @container flex h-full flex-col"
       style={{
         ["--thread-max-width" as string]: "44rem",
-        ["--composer-radius" as string]: "0px",
-        ["--composer-padding" as string]: "10px",
+        ["--composer-radius" as string]: "0.25rem",
+        ["--composer-padding" as string]: "12px",
       }}
     >
       <ThreadPrimitive.Viewport
@@ -64,6 +77,7 @@ export const Thread: FC = () => {
         className="relative flex flex-1 flex-col overflow-x-auto overflow-y-scroll scroll-smooth"
       >
         <div className="mx-auto flex w-full max-w-(--thread-max-width) flex-1 flex-col px-4 pt-4">
+          <ThreadTitleBanner />
           <AuiIf condition={(s) => s.thread.isEmpty}>
             <ThreadWelcome />
           </AuiIf>
@@ -100,9 +114,8 @@ const ThreadScrollToBottom: FC = () => {
   return (
     <ThreadPrimitive.ScrollToBottom asChild>
       <TooltipIconButton
-        tooltip="Scroll to bottom"
         variant="outline"
-        className="aui-thread-scroll-to-bottom dark:border-border dark:bg-background dark:hover:bg-accent absolute -top-12 z-10 self-center p-4 disabled:invisible"
+        className="aui-thread-scroll-to-bottom absolute -top-12 z-10 self-center bg-background border-2 border-border shadow-md hover:bg-accent disabled:invisible"
       >
         <ArrowDownIcon />
       </TooltipIconButton>
@@ -160,12 +173,12 @@ const Composer: FC = () => {
       <ComposerPrimitive.AttachmentDropzone asChild>
         <div
           data-slot="aui_composer-shell"
-          className="bg-background data-[dragging=true]:bg-accent/50 flex w-full flex-col gap-2 border-2 border-border p-(--composer-padding) data-[dragging=true]:border-dashed"
+          className="bg-background data-[dragging=true]:bg-accent/50 flex w-full flex-col gap-2 rounded border-2 border-border p-(--composer-padding) shadow-md transition focus-within:shadow-xs data-[dragging=true]:border-dashed"
         >
           <ComposerAttachments />
           <ComposerPrimitive.Input
             placeholder="Send a message..."
-            className="aui-composer-input placeholder:text-muted-foreground/80 max-h-32 min-h-10 w-full resize-none bg-transparent px-1.75 py-1 text-sm outline-none"
+            className="aui-composer-input placeholder:text-muted-foreground max-h-32 min-h-10 w-full resize-none bg-transparent px-4 py-2 text-sm outline-none"
             rows={1}
             autoFocus
             aria-label="Message input"

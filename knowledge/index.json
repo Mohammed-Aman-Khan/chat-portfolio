@@ -1,0 +1,95 @@
+{
+  "documents": [
+    {
+      "id": "acme-corp",
+      "title": "Acme Corp — Senior Software Engineer",
+      "category": "experience",
+      "path": "experience/acme-corp.md",
+      "keywords": ["acme", "senior engineer", "frontend", "nextjs", "react", "dashboard", "performance", "component library", "analytics", "2021", "san francisco"]
+    },
+    {
+      "id": "beta-inc",
+      "title": "Beta Inc — Full Stack Developer",
+      "category": "experience",
+      "path": "experience/beta-inc.md",
+      "keywords": ["beta", "full stack", "python", "django", "saas", "api", "b2b", "supply chain", "austin", "2019", "postgresql"]
+    },
+    {
+      "id": "startup-xyz",
+      "title": "Startup XYZ — Junior Developer",
+      "category": "experience",
+      "path": "experience/startup-xyz.md",
+      "keywords": ["startup", "junior", "fintech", "mvp", "first hire", "react", "express", "mongodb", "stripe", "2017", "remote"]
+    },
+    {
+      "id": "frontend-skills",
+      "title": "Frontend Skills",
+      "category": "skills",
+      "path": "skills/frontend.md",
+      "keywords": ["frontend", "react", "typescript", "javascript", "nextjs", "tailwind", "css", "html", "zustand", "component", "design system", "testing", "playwright", "vitest"]
+    },
+    {
+      "id": "backend-skills",
+      "title": "Backend Skills",
+      "category": "skills",
+      "path": "skills/backend.md",
+      "keywords": ["backend", "node", "nodejs", "python", "django", "fastapi", "postgresql", "redis", "mongodb", "graphql", "api", "rest", "microservices", "kafka", "rabbitmq", "sql"]
+    },
+    {
+      "id": "devops-skills",
+      "title": "DevOps & Infrastructure",
+      "category": "skills",
+      "path": "skills/devops.md",
+      "keywords": ["devops", "aws", "docker", "kubernetes", "terraform", "ci", "cd", "github actions", "jenkins", "cloud", "infrastructure", "monitoring", "datadog", "prometheus"]
+    },
+    {
+      "id": "state-university",
+      "title": "State University — BS Computer Science",
+      "category": "education",
+      "path": "education/state-university.md",
+      "keywords": ["university", "college", "degree", "bs", "computer science", "gpa", "dean", "capstone", "teaching assistant", "acm", "coursework", "2013", "2017"]
+    },
+    {
+      "id": "aws-certification",
+      "title": "AWS Solutions Architect — Associate",
+      "category": "education",
+      "path": "education/aws-certification.md",
+      "keywords": ["aws", "certification", "solutions architect", "associate", "2021", "cloud"]
+    },
+    {
+      "id": "continuous-learning",
+      "title": "Continuous Learning",
+      "category": "education",
+      "path": "education/continuous-learning.md",
+      "keywords": ["learning", "books", "conferences", "rust", "wasm", "webassembly", "llm", "ai", "reading", "react conf", "reinvent"]
+    },
+    {
+      "id": "portfolio-chatbot",
+      "title": "Portfolio Chatbot",
+      "category": "projects",
+      "path": "projects/portfolio-chatbot.md",
+      "keywords": ["portfolio", "chatbot", "ai", "llm", "nextjs 16", "ai sdk", "assistant ui", "retroui", "tailwind", "zustand", "2026"]
+    },
+    {
+      "id": "ecommerce-platform",
+      "title": "E-Commerce Platform Modernization",
+      "category": "projects",
+      "path": "projects/ecommerce-platform.md",
+      "keywords": ["ecommerce", "platform", "modernization", "frontend", "performance", "migration", "micro-frontends", "pwa", "checkout", "revenue", "2022", "2023"]
+    },
+    {
+      "id": "open-source",
+      "title": "Open Source Contributions",
+      "category": "projects",
+      "path": "projects/open-source.md",
+      "keywords": ["open source", "github", "react-query-builder", "typed-routes", "tanstack", "zustand", "contributions", "maintainer"]
+    },
+    {
+      "id": "about",
+      "title": "About Me",
+      "category": "contact",
+      "path": "contact/about.md",
+      "keywords": ["about", "contact", "email", "github", "linkedin", "location", "san francisco", "hire", "job", "role", "remote", "speaking", "consulting"]
+    }
+  ]
+}

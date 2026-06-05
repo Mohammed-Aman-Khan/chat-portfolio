@@ -1,0 +1,35 @@
+{
+  "threadId": "experience",
+  "messages": [
+    {
+      "id": "exp-msg-1",
+      "role": "user",
+      "parts": [{ "type": "text", "text": "Can you walk me through your work experience?" }]
+    },
+    {
+      "id": "exp-msg-2",
+      "role": "assistant",
+      "parts": [{ "type": "text", "text": "Absolutely! I've been building software professionally for 8+ years across three companies:\n\n**Acme Corp (2021 – Present)** — Senior Software Engineer, leading frontend architecture. I migrated a legacy jQuery app to Next.js, cutting page loads from 4.2s to 0.8s. I also built a shared component library adopted by 8 teams.\n\n**Beta Inc (2019 – 2021)** — Full Stack Developer on a B2B SaaS platform. I built REST APIs handling 10k+ requests/min, implemented RBAC for 200+ enterprise accounts, and automated the CI/CD pipeline (45min → 3min deploys).\n\n**Startup XYZ (2017 – 2019)** — First engineering hire at a fintech startup. Built the MVP web app solo, shipped a Stripe integration, and helped grow from 0 to 500 beta users.\n\nWhich role would you like to dive deeper into?" }]
+    },
+    {
+      "id": "exp-msg-3",
+      "role": "user",
+      "parts": [{ "type": "text", "text": "Tell me more about what you did at Acme Corp." }]
+    },
+    {
+      "id": "exp-msg-4",
+      "role": "assistant",
+      "parts": [{ "type": "text", "text": "At Acme Corp, I own the customer-facing dashboard — it's used by 50,000+ daily active users. When I joined, it was a jQuery monolith with 4.2s page loads and a 42% checkout abandonment rate.\n\nI led a gradual migration to Next.js + React. Instead of a big-bang rewrite, we used micro-frontends to ship incrementally. Each page we migrated got measurably faster, and we could A/B test against the old version.\n\nThe big wins:\n\n- **Performance:** 4.2s → 0.8s page load (81% improvement) by combining ISR, streaming SSR, and edge caching\n- **Team velocity:** Built a shared component library (TypeScript + Tailwind) that 8 teams now use — saved ~20% dev time on net-new features\n- **Revenue:** Checkout abandonment dropped from 42% to 18% after the redesign. That alone was worth $2.3M annualized.\n\nI also built a real-time analytics pipeline (2M events/min, <100ms latency) using Node.js, Redis streams, and PostgreSQL. The product team uses it daily to make data-informed decisions.\n\nWant to know about the tech stack or the migration strategy?" }]
+    },
+    {
+      "id": "exp-msg-5",
+      "role": "user",
+      "parts": [{ "type": "text", "text": "What was the hardest technical challenge you faced there?" }]
+    },
+    {
+      "id": "exp-msg-6",
+      "role": "assistant",
+      "parts": [{ "type": "text", "text": "The hardest challenge was the real-time analytics pipeline. We had to process 2 million events per minute with sub-100ms latency while keeping costs reasonable. The legacy system used a batch ETL that ran every 15 minutes — product managers were flying blind between runs.\n\nThe core problem was write amplification: every user action triggered 3-5 analytics events, and we had to aggregate them into meaningful metrics without blowing up our database.\n\nI ended up using Redis Streams as a buffer layer: events flowed in → Redis → consumer groups processed them in parallel → aggregated results written to PostgreSQL in bulk every second. This gave us:\n- Real-time dashboards (previously 15-minute delay)\n- 60% reduction in database write load\n- The same infrastructure cost as the old batch system\n\nThe hardest part wasn't the code — it was modeling the event schema so product managers could add new metrics without engineering support. I designed a declarative config format that let PMs define events and aggregations in YAML. It's still in use 3 years later." }]
+    }
+  ]
+}

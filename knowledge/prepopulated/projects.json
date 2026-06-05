@@ -1,0 +1,25 @@
+{
+  "threadId": "projects",
+  "messages": [
+    {
+      "id": "proj-msg-1",
+      "role": "user",
+      "parts": [{ "type": "text", "text": "What projects are you most proud of?" }]
+    },
+    {
+      "id": "proj-msg-2",
+      "role": "assistant",
+      "parts": [{ "type": "text", "text": "Three projects stand out:\n\n**1. E-Commerce Platform Modernization (Acme Corp, 2022–2023)**\nI led the frontend migration from a jQuery monolith to Next.js micro-frontends serving 50k+ daily users. Page loads dropped from 4.2s to 0.8s, mobile conversion nearly doubled, and the checkout redesign alone added $2.3M in annual revenue. This is the project I'm most proud of because the impact was measurable and massive.\n\n**2. This Portfolio Chatbot (2026)**\nBuilt with Next.js 16, AI SDK v6, and RetroUI. It's an experiment in replacing the traditional static portfolio with an interactive AI-powered conversation. I wanted to see how far I could push the \"chat as UI\" pattern while keeping costs low enough for public access without auth.\n\n**3. Open Source Libraries**\nI maintain react-query-builder (2.1k stars) and typed-routes (800 stars). I also contributed column pinning to TanStack Table. Open source is how I give back — I fix pain points in tools I use daily.\n\nWhich one would you like me to dive into?" }]
+    },
+    {
+      "id": "proj-msg-3",
+      "role": "user",
+      "parts": [{ "type": "text", "text": "Tell me about the e-commerce migration. How did you approach it technically?" }]
+    },
+    {
+      "id": "proj-msg-4",
+      "role": "assistant",
+      "parts": [{ "type": "text", "text": "The migration was a classic \"change the engine while the plane is flying\" problem. 50k daily users, revenue depending on it, and we couldn't afford downtime or regressions.\n\n**Phase 1: Prove it works (2 months)**\nWe picked the product detail page as the pilot — high traffic, relatively self-contained. Built it as a standalone Next.js app behind a reverse proxy. Ran A/B tests: 50% of users got the new version, 50% the old. The new version was 3x faster and conversion was +8%. That bought us stakeholder buy-in for the full migration.\n\n**Phase 2: Micro-frontend architecture (4 months)**\nInstead of rewriting everything at once, we split the app into 8 domains (search, cart, checkout, account, etc.). Each domain was a separate Next.js app deployed independently. A thin shell app handled routing and shared state. This let teams migrate at their own pace without blocking each other.\n\n**Phase 3: The checkout (3 months)**\nCheckout was the hardest — 7 steps, lots of edge cases, and any bug meant lost revenue. We redesigned it as a 3-step flow. Used React Hook Form + Zod for validation, Stripe Elements for payments. Deployed behind a feature flag and gradually ramped up from 1% to 100% of users over 4 weeks while monitoring error rates and conversion.\n\n**The results after 9 months:**\n- Page load: 4.2s → 0.8s\n- Mobile conversion: +94%\n- Checkout abandonment: 42% → 18%\n- Zero production incidents during migration" }]
+    }
+  ]
+}

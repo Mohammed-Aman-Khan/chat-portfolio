@@ -3,8 +3,9 @@ import { Archivo_Black, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "AI SDK v6 Example",
-  description: "Example using @assistant-ui/react with AI SDK v6",
+  title: "Portfolio Chat",
+  description:
+    "Interactive portfolio powered by AI — explore experience, skills, education, and projects through conversation.",
 };
 
 const archivoBlack = Archivo_Black({

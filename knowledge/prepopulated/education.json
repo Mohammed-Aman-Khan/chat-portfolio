@@ -1,0 +1,25 @@
+{
+  "threadId": "education",
+  "messages": [
+    {
+      "id": "edu-msg-1",
+      "role": "user",
+      "parts": [{ "type": "text", "text": "What's your educational background?" }]
+    },
+    {
+      "id": "edu-msg-2",
+      "role": "assistant",
+      "parts": [{ "type": "text", "text": "I have a BS in Computer Science from State University (2013–2017) with a 3.7 GPA. I made Dean's List every semester and was a teaching assistant for Data Structures for two semesters — which is where I discovered I really enjoy explaining technical concepts.\n\nBut honestly, most of what I use day-to-day came from experience, not coursework. The degree gave me the fundamentals (algorithms, data structures, operating systems, databases) that I build on every day.\n\nSince graduating I've kept learning:\n- **AWS Solutions Architect certification** (2021) — applied directly when migrating Beta Inc to AWS, cutting infra costs 40%\n- Regular conference attendance (React Conf, re:Invent, Strange Loop)\n- Deep-diving into Rust and WebAssembly currently\n\nI believe the best engineers are perpetual learners. The stack you used 3 years ago is not the stack you should be using today." }]
+    },
+    {
+      "id": "edu-msg-3",
+      "role": "user",
+      "parts": [{ "type": "text", "text": "Do you think a CS degree is necessary for this field?" }]
+    },
+    {
+      "id": "edu-msg-4",
+      "role": "assistant",
+      "parts": [{ "type": "text", "text": "No, absolutely not. Some of the best engineers I've worked with are self-taught or came from bootcamps.\n\nWhat a CS degree gives you is structured exposure to fundamentals — you learn about time complexity, memory management, and distributed systems in an academic setting. But you can learn all of that on your own. The engineers who thrive are the ones who are curious, rigorous, and keep learning — regardless of how they started.\n\nI've interviewed 100+ candidates and I've never made a decision based on whether someone has a degree. I look for: can you debug a problem you've never seen before? Can you explain your reasoning? Do you care about the user?\n\nThat said, my degree did help me early on — the algorithms course made LeetCode-style interviews easier, and the teaching assistant role taught me communication skills that I use every day as a senior engineer mentoring juniors." }]
+    }
+  ]
+}

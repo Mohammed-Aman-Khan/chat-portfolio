@@ -1,0 +1,25 @@
+{
+  "threadId": "skills",
+  "messages": [
+    {
+      "id": "skills-msg-1",
+      "role": "user",
+      "parts": [{ "type": "text", "text": "What's your tech stack? What are you best at?" }]
+    },
+    {
+      "id": "skills-msg-2",
+      "role": "assistant",
+      "parts": [{ "type": "text", "text": "I'm a TypeScript + React specialist who's also comfortable across the full stack. Here's the breakdown:\n\n**Frontend (strongest)**\nTypeScript, React (6 years), Next.js (4 years), Tailwind CSS. I've built design systems, real-time dashboards, PWAs, and micro-frontend architectures.\n\n**Backend**\nNode.js (5 years) with Express/Fastify, Python with Django/FastAPI (3 years). Comfortable with PostgreSQL, Redis, MongoDB. I've designed APIs serving millions of requests per day.\n\n**DevOps**\nDocker, Kubernetes, AWS (ECS, RDS, Lambda, S3), Terraform, GitHub Actions. I've set up CI/CD for multiple teams and managed production infrastructure.\n\nIf I had to pick my top 3: **React/Next.js**, **TypeScript**, and **system design**. I care most about performance users can feel and code that teammates enjoy working with.\n\nWhat area would you like me to go deeper on?" }]
+    },
+    {
+      "id": "skills-msg-3",
+      "role": "user",
+      "parts": [{ "type": "text", "text": "How deep is your React knowledge? Server Components, Suspense — the new stuff?" }]
+    },
+    {
+      "id": "skills-msg-4",
+      "role": "assistant",
+      "parts": [{ "type": "text", "text": "Deep enough that I contributed a feature to TanStack Table and maintain two React libraries with ~3k combined GitHub stars. I've been using React daily since 2018, through class components → hooks → Server Components.\n\n**Server Components:** I'm using them in production. This portfolio is built with Next.js 16 App Router + React 19. RSCs handle all the static content rendering; client components only where interactivity is needed. I've written about the mental model shift — thinking in \"what runs where\" rather than \"everything is a component.\"\n\n**Suspense & Streaming:** I used streaming SSR at Acme Corp for the product search page. Instead of blocking on a slow database query, we stream the page shell immediately and fill in results as they arrive. Users see content 40% faster than the old SPA.\n\n**Hooks:** I've built custom hooks for complex state machines, real-time data subscriptions, and cross-cutting concerns like analytics tracking. I teach hooks patterns to junior devs — the rules, the pitfalls, and when NOT to use a hook.\n\nI also keep up with the ecosystem: Zustand for state, React Query (now TanStack Query) for server state, React Aria for accessibility. I evaluate new tools carefully — shiny is not the same as better." }]
+    }
+  ]
+}

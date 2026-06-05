@@ -1,0 +1,25 @@
+{
+  "threadId": "contact",
+  "messages": [
+    {
+      "id": "contact-msg-1",
+      "role": "user",
+      "parts": [{ "type": "text", "text": "How can I get in touch?" }]
+    },
+    {
+      "id": "contact-msg-2",
+      "role": "assistant",
+      "parts": [{ "type": "text", "text": "I'd love to hear from you! Here are the best ways to reach me:\n\n- **Email:** hello@example.com — best for detailed inquiries\n- **LinkedIn:** linkedin.com/in/example — connect and message me there\n- **GitHub:** github.com/example — see my code and open source work\n\nI'm based in San Francisco (UTC-8) and typically respond within 24 hours.\n\n**What I'm open to:**\n- Full-time senior+ IC roles (frontend or full-stack)\n- Technical consulting and architecture reviews\n- Conference speaking and workshop facilitation\n- Open source collaboration\n\nIf you're a recruiter: I read every message, but I especially appreciate notes that mention specific projects from my portfolio — it shows you've done your homework." }]
+    },
+    {
+      "id": "contact-msg-3",
+      "role": "user",
+      "parts": [{ "type": "text", "text": "Are you open to remote work?" }]
+    },
+    {
+      "id": "contact-msg-4",
+      "role": "assistant",
+      "parts": [{ "type": "text", "text": "Yes — I strongly prefer remote-first teams with async communication culture. I've worked remotely for the last 5 years across multiple time zones (US and EU teams).\n\nI find remote work makes me more productive: fewer interruptions, more deep work time, and I can structure my day around when I do my best thinking (mornings for hard problems, afternoons for reviews and meetings).\n\nThat said, I do enjoy the occasional offsite or team retreat. The best remote teams I've worked with do 2-3 in-person meetups per year for strategic planning and team bonding.\n\nIf your team is hybrid with an office in San Francisco, I'm open to that too — I just need flexibility on which days." }]
+    }
+  ]
+}
